@@ -8,8 +8,7 @@
 
 import tushare as ts
 import time
-from datetime import date
-
+from datetime import date, timedelta
 
 ##### initialize parametes #####
 stockList = '601318' # stockList[0] = '601318' index sys starts from 0
@@ -17,7 +16,7 @@ k = '60' # k type: 60 minutes
 
 today = date.today()
 # wd = date.isoweekday(today) # weekday starts from 1
-days = datetime.timedelta(days=10) # no of days in between
+days = timedelta(days=10) # no of days in between
 begin = date.isoformat(today-days) # start date of history data
 finish = date.isoformat(today) # end date of history data
 
@@ -28,7 +27,7 @@ threshold_buy = 0.02 # judge rule of how to choose the buy point
 histData = ts.get_hist_data(stockList, ktype= k ,start = begin, end = finish)  
 
 ##### rule 1: when close - ma5 > 0.02, choose #####
-histData['increaseRate']=(histData['close']-histData['ma5'])/x['ma5']
+histData['increaseRate']=(histData['close']-histData['ma5'])/histData['ma5']
 screen1 = histData[histData.increaseRate>threshold_buy]
 
 ##### rule 2.1: filted data exits in current day #####
